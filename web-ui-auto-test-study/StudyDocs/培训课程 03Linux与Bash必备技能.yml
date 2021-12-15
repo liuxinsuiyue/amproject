@@ -1,0 +1,795 @@
+Linux系统与Shell环境准备	多平台配置Shell使用环境
+  本节目录：
+    分类、操作 、shell和Linux系统关系 shell脚本编写与运行
+  Linux的祖先是Unix 工具软件、应用程序、网络协议也都借助发明了
+  Linux内核的常见的发行版 （按发行家族分类）：
+    Debian：Ubuntu->Linux Mint
+    fedora：RHEL->CentOS/ OracleLinux
+    SUSE：SLES->openSUSE
+    其他发行版 redhat RedHat 等
+  Windows与Linux的区别
+    界面【界面统一外壳程序固定，菜单几乎一致，快捷键也几乎相同】【图形界面风格依发布版不同而不同，可能互不兼容】
+    驱动程序【驱动程序丰富，版本更新频繁，硬件产商提供】【志愿者开发，硬件产商未提供驱动程序】
+    使用【使用比较简单，容易】【图形界面使用简单，容易入门】
+    软件【可鞥你能需要商业软件支持，要购买授权】【大部门软件可以自由获取，同样功能软件选择较少】
+    目录结构不一样是最大的区别
+  Linux目录结构
+    Linux的目录结构为树状结构，最顶级的目录为根目录 /。
+    树状目录结构解释如下:
+      ___/bin (binary二进制) 常用Linux命令
+
+      ___/boot 存放着启动Linux时使用的一些核心文件，包括一些链接文件以及镜像文件
+
+      ___/cdrom 这个目录在你刚刚安装系统的时候是空的。你可以将光驱文件系统挂在这个目录下。
+                  例如：mount /dev/cdrom /cdrom
+
+      ___/sbin 存放管理员使用的系统管理程序
+
+      ___/home 存放用户主目录。如果我们建立一个用户，用户名是"xx",
+                 那么在/home目录下就有一个对应的/home/xx路径
+
+      ___/lib (library库)存放系统动态连接共享库
+
+      ___/lost+found 一般情况下是空的，当系统非法关机后，这里就存放了一些文件
+
+      ___/mnt 挂载其它文件系统
+
+      ___/root 系统管理员（超级用户）主目录
+
+      ___/shlib 使用运行SCO UNIX程序的iBCS2用的
+
+      ___/tmp (temporary临时)存放不同程序执行时产生的临时文件,系统会周期性地清除里面的内容
+
+      ___/vmlinuz 存放的是系统的内核
+
+      ___/dev (device设备) 该目录下存放的是Linux的外部设备，
+                在Linux中访问设备的方式和访问文件的方式是相同的
+              _____/dev/console 系统控制台
+              _____/dev/fd0 第一个软盘驱动器
+              _____/dev/hda1 第一个IDE硬盘驱动器的第一个逻辑分区
+              _____/dev/hdb3 第二个IDE硬盘驱动器的第三个逻辑分区
+              _____/dev/ttys0 第一个串行端口
+              _____/dev/lp0 第一个并行端口
+              _____/dev/cua 用来连接调制解调器
+              _____/dev/sda 第一个SCSI硬盘驱动器
+              _____/dev/null 是一个接受设备输入但不产生任何输出的虚拟的设备
+              _____/dev/tty1 第一个虚拟控制台
+              _____/dev/pty* “虚拟终端”，用于为远程登录提供终端
+
+      ___/usr 用户应用程序文件夹
+              _____/usr/X11R6 存放X-Windows的目录
+              _____/usr/bin 用户用到的大多数应用程序
+              _____/usr/sbin 给超级用户使用的比较高级的管理程序和系统守护程序
+              _____/usr/doc 文档
+              _____/usr/include Linux下开发或编译应用程序需要用的头文件
+              _____/usr/openwin 存放SUN的OpenWin
+              _____/usr/lib 常用的动态、静态库
+              _____/usr/local 普通用户、超级用户安装新软件使用
+              _____/usr/man 联机帮助手册
+              _____/usr/src 系统源代码，(/usr/src/linux系统源代码)
+
+      ___/etc (etcetera) 系统管理的配置文件和子目录
+              _____/etc/DIR_COLORS 设定颜色
+              _____/etc/HOSTNAME 设定用户的节点名
+              _____/etc/NETWORKING 只有YES标明网络存在
+              _____/etc/host.conf 文件说明用户的系统如何查询节点名
+              _____/etc/hosts 设定用户自已的IP与名字的对应表
+              _____/etc/hosts.allow 设置允许使用inetd的机器使用
+              _____/etc/hosts.deny 设置不允许使用inetd的机器使用
+              _____/etc/hosts.equiv 设置远端机不用密码
+              _____/etc/inetd.conf 设定系统网络守护进程inetd的配置
+              _____/etc/inetd.pid inetd这个进程的进程id
+              _____/etc/hosts.lpd 设定远端有哪些节点可以使用本机的打印机
+              _____/etc/gateways 设定路由器
+              _____/etc/protocols 设定系统支持的协议
+              _____/etc/named.boot 设定本机为名字服务器的配置文件
+              _____/etc/named.pid 本机上运行的名字服务器的进程id
+              _____/etc/networks 设定网络的配置文件
+              _____/etc/resolv.conf 设定系统的名字服务器
+              _____/etc/services 设定系统的端品与协议类型和提供的服务
+              _____/etc/exports 设定NFS系统用的
+              _____/etc/NNTP_INEWS_DOMAIN 设置新闻服务器的配置文件
+              _____/etc/nntpserver 设置用户使用的新闻服务器的地址
+              _____/etc/XF86Config X Window的配置文件
+              _____/etc/hostid 系统独有的一个硬件id
+              _____/etc/at.deny 设置哪些用户不能使用at命令
+              _____/etc/bootptab 给MAKEDEV程序设定各种不同的设备驱动文件的格式
+              _____/etc/makedev.cfg 同DEVINFO一样给MAKEDEV使用的设置文件
+              _____/etc/diphosts 设置拔号服务器的用户名和口令
+              _____/etc/slip.hosts,/etc/slip.login 设定SLIP的配置文件
+              _____/etc/fastboot 使用shutdown -f产生的，重启系统要查这个文件
+              _____/etc/fstab 记录开机要mount的文件系统
+              _____/etc/mtab 系统在启动时创建的信息文件
+              _____/etc/ftpaccess FTP服务器的一些配置
+              _____/etc/ftpconversions 设定在FTP时使用的过滤器的位置
+              _____/etc/ftpusers 设定不能使用FTP服务的用户
+              _____/etc/inittab 设定系统启动时init进程将把系统设置成什么样的runlevel
+              _____/etc/ld.so.cache 查找系统动态链接库的缓存
+              _____/etc/ld.so.conf 系统动态链接库的路径
+              _____/etc/lilo.conf lilo的配置文件
+              _____/etc/magic 给file命令使用的
+              _____/etc/aliases 给sendmail使用的设置别名的文件
+              _____/etc/mail.rc,
+                        /etc/mailcap,
+                        /etc/sendmail.cf,
+                        /etc/sendmail.st 设置sendmail的
+              _____/etc/issue 记录用户登录前显示的信息
+              _____/etc/motd 超级用户发布通知的地方
+              _____/etc/organization 存放用户的名字和组织
+              _____/etc/group 设定用户的组名与相关信息
+              _____/etc/passwd 用户密码文件(重要呀)
+              _____/etc/shadow 见/etc/passwd
+              _____/etc/pnpdevices 列出支持的Plug&Play设备
+              _____/etc/snooptad 监控用户的屏幕，监听的终端列表
+              _____/etc/sudoers 可以sudo命令的配置文件
+              _____/etc/syslog.conf 系统记录程序syslogd的配置文件
+              _____/etc/utmp 目前在用系统的用户信息
+              _____/etc/wtmp 同utmp差不多，只是它累加
+              _____/etc/nologin 系统在shutdown时不希望用户登录就产生这个文件
+              _____/etc/securetty 设定哪些终端可以让root登录
+              _____/etc/termcap 设置系统终端信息的
+              _____/etc/ttys 设定系统的终端类型
+              _____/etc/gettydefs getty_ps的定义文件
+              _____/etc/yp.conf NIS的配置文件
+              _____/etc/mtools.conf 设定mtools程序的参数
+              _____/etc/fdprm 设定格式化软盘的参数
+              _____/etc/login.access 控制用户登录权限的文件
+              _____/etc/login.defs 所有用户登录时的缺省配置文件
+
+      ___/proc 虚拟系统，内存映象
+              _____/proc/1 关于进程1的信息目录。每个进程在/proc 下有一个名为其进程号的目录。
+               _____/proc/cpuinfo 处理器信息，如类型、制造商、型号和性能。
+               _____/proc/devices 当前运行的核心配置的设备驱动的列表。
+               _____/proc/dma 显示当前使用的DMA通道。
+               _____/proc/filesystems 核心配置的文件系统。
+               _____/proc/interrupts 显示使用的中断
+
+               _____/proc/ioports 当前使用的I/O端口。
+               _____/proc/kcore 系统物理内存映象
+               _____/proc/kmsg 核心输出的消息。也被送到syslog 。
+               _____/proc/ksyms 核心符号表。
+               _____/proc/loadavg 系统"平均负载"；3个指示器指出系统当前的工作量。
+               _____/proc/meminfo 存储器使用信息，包括物理内存和swap。
+               _____/proc/modules 当前加载了哪些核心模块。
+               _____/proc/net 网络协议状态信息。
+               _____/proc/self 到查看/proc 的程序的进程目录的符号连接。当2个进程查看/proc 时， 是不同的连接。这主要便于程序得到它自己的进程目录。
+               _____/proc/stat 系统的不同状态
+               _____/proc/uptime 系统启动的时间长度。
+               _____/proc/version 核心版本。
+
+      ___/var 存放着那些不断在扩充着的东西，为了保/usr的相对稳定，那些经常被修改的目录可以
+                放在这个目录下。包括系统一般运行时要改变的数据。
+         每个系统是特定的，即不通过网络与其他计算机共享。
+              _____/var/adm
+              _____/var/catman 当要求格式化时的man页的cache。
+                 man页的源文件一般存在/usr/man/man* 中；有些man页可能有预格式化的版本，
+           存在/usr/man/cat* 中。而其他的man页在第一次看时需要格式化，
+           格式化完的版本存在/var/man 中，这样其他人再看相同的页时就无须等待
+           格式化了。 (/var/catman 经常被清除，就象清除临时目录一样。)
+      _____/var/lib 系统正常运行时要改变的文件。
+      _____/var/local    /usr/local 中安装的程序的可变数据(即系统管理员安装的程序)。
+                     注意，如果必要，即使本地安装的程序也会使用其他/var 目录，
+              例如/var/lock 。 /var/lock 锁定文件。
+              许多程序遵循在/var/lock 中产生一个锁定文件的约定，
+              以支持他们正在使用某个特定的设备或文件。
+              其他程序注意到这个锁定文件，将不试图使用这个设备或文件。
+      _____/var/log 各种程序的Log文件，特别是login (/var/log/wtmp log所有到系统
+            的登录和注销) 和syslog (/var/log/messages 里存储所有核心和系统程序信息。)
+                      /var/log 里的文件经常不确定地增长，应该定期清除。
+      _____/var/run 保存到下次引导前有效的关于系统的信息文件。例如， /var/run/utmp
+                      包含当前登录的用户的信息。
+      _____/var/spool mail, news, 打印队列和其他队列工作的目录。
+                    每个不同的spool在/var/spool 下有自己的子目录，
+                    例如，用户的邮箱在/var/spool/mail 中。
+      _____/var/tmp 比/tmp 允许的大或需要存在较长时间的临时文件。
+                     (虽然系统管理员可能不允许/var/tmp 有很旧的文件。)
+  第三方客户端登录（如：SecureCRT）
+
+    ls
+    rm -rf test.sh 删除文件
+    vim test.sh 新建文件并进入编辑，编辑
+    :wq 回车保存编辑的内容
+    cat test.sh查看文件的内容
+  shell是一个桥梁，打通用户和Linux/Unix内核
+    bash功能强大，易用
+    常见shell
+      Bourne Shell（简称sh /bin/sh或/usr/bin/sh）标准 是第一个流行的
+      Bourne Again Shell (简称bash /bin/bash)各种Linux发行版默认配置的shell
+      C-Shelll（简称csh /usr/bin/csh）、
+      Korn Shell（简称ksh /usr/bin/ksh）
+      tcsh 是csh的增强版
+      ash 轻量级
+      shell for Root(/sbin/sh)
+      $ cat /etc/shells可以查看当前Linux系统可用的shell
+
+    shell命令举例：vim中编辑并保存文件test.sh
+      #!/bin/bash 告诉系统我将使用bash shell
+      echo "hello" 帮我输入hello
+
+    运行shell
+      chmod +x./test.sh #执行方法1，使脚本具有执行权限(./test.sh不加前面会报权限错误。chmod +x test.sh)
+      /bin/sh test.sh 指定shell来源性，若与文件不一致 以运行的为准
+
+    运行 Linux命令
+      windows Git Bash 软件
+      mac  自带terminal
+      虚拟机Linux 自带bash
+Linux常用命令(文件/网络/性能)	掌握BAT大厂面试必考经典命令
+  文件
+    浏览目录 创建文件，常见的命令如下
+      ls：列出目录
+      cd：切换目录 （指定目录）
+      pwd：显示目前的目录
+      mkdir：创建一个新的目录 （指定目录名称）
+      rmdir：删除一个空的目录 （指定目录名称）
+      cp：复制文件或目录
+      rm：移除文件或目录
+      mv：移动文件与目录，或修改文件与目录的名称 （指定文件名与目标路径）
+    示例：
+      cd /home/username 切换目录
+      ls
+      mkdir test 创建test目录
+      ls
+      mv *** a.sh to /home/username/test 当前目录的移到test目录下 ~符号表示当前路径 例子 ~/tmp
+      pwd 查看当前路径
+      cd /home/username/test
+      ls
+      cd /home/username
+      rm -rf test
+      备注
+      clear 回车可以清空命令窗口
+      cd..退出当前目录
+    --------
+    文件属性
+      ll（ls -l效果也一样）：查看目录下所有文件属性 列表【权限属性，连接，所有者，用户组，大小，修改日期，文件或目录名】
+        drwxr-xr-x
+        第1位文件类型 d目录 -文件 l连接文件 b设备文件 c设备文件中的串行端口设备，如键盘鼠标
+        第2-4位 rwx 可读可写可执行 r read 4 w write 2 x execute 1  （代表文件所有者root权限）
+        第5-7位 r-x 可读可执行   （代表用户组权限）
+        第8-10位 r-x 可读可执行   （代表其他用户权限）
+        修改test文件属性 chmod 777 test
+  网络
+    查看网络信息，查看网络是否流畅、状态
+    ping：测试网络连接情况
+      -c ping的次数
+      -l 每次ping的时间间隔
+    netstat：打印Linux网络系统状态信息
+      -t 列出所有tcp
+      -u 列出所有udp
+      -l 只显示监听端口
+      -n 以数字形式显示地址和端口号
+      -p 显示进程的pid和名字
+      举例：
+        netstat  列表【类型，连接状态，进程号，路径】
+        netstat -t tcp
+        netstat -ntlp
+    ----------------------------------
+    ifconfig：显示或设置网络设备
+    ping：测试远程主机的连通性
+      -c：ping的次数
+      -I：每次ping的时间间隔
+
+    netstat：打印Linux网络系统的状态信息
+      -t：列出所有tcp
+      -n：以数字形式显示地址和端口号
+      -p：显示进程的pid和名字
+
+    区别：
+    ifconfig主要查看网络设备：例如mac地址等
+    ping：主要查看网络的连通性
+    netstat：主要查看网络系统的状态，进程等
+  性能
+    查看CPU 内存状态 显示性能与进程
+    top:持续监控系统性能（实时）
+    ps:查看进程信息（不是实时，只查看快照 经常用来看某个进程是不是在运行，如果在运行就配合kill命令去杀掉进程）
+     -aux系那是所有进程，包括用户，分组情况
+    man ps:可以查看帮助文档
+
+Linux三剑客与管道使用	掌握grep、awk、sed等Linux经典数据处理技术
+  Linux 的几个个常用的工具：grep awk sed 管道
+    grep awk sed：对文本/文件进行基本的操作
+    管道：是指连接其他各个工具的管道符
+    正则不属于Linux，它是匹配字符串的工具
+  【管道】
+    Linux提供管道符“|”将两个命令隔开，管道符左边命令的输出就会作为管道符右边命令的输入
+
+    举例：
+    echo"hello 1234"|grep‘hello’ 从hello1234中挑选出hello 字符
+
+  【正则表达式】
+    就是记录文本规则的代码
+      使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。
+    visual Studio Code （word ppt都有带）都能支持正则匹配的功能，用于找符合一定文本规则的字符串
+    https://tool.oschina.net/p/regex 在线正则测试网站
+
+    举例：
+      ^import  以import开始的字符串，前面不能有任何字符或空格
+      <=<div>)[^<]+<?=</div>  <div>a test</div>
+      \bhi\b   找出所有的hi单词 前后必须是空格
+      \bhi\b.*\blucy\b   hi单词后面有lucy单词
+      0\d{2}-\d(8)   以0开头，然后是两个数字，然后是一个连字号“-”，最后是8个数字
+      \ba\w\b 匹配以a开头的单词
+      \ba\w{6}\b 匹配刚好6个字符的单词
+      \d+ 匹配1个或更多连续的数字
+      ^\d{5,12}$ 5位到12位QQ号
+    常用的元字符 (普通正则表达式 BRE)
+      . 匹配除换行符以外的任意字符
+      \w 匹配字符或数字或下划线或汉字
+      \s 匹配任意的空白符 等同于[[:space:]]
+      \d 匹配数字 等同于正则[0-9]  \D等同于[^0-9]或[[:digit:]] 表示不在0-9范围内的字符
+      \b 匹配单子的开始或结束
+      ^ 匹配字符串的开始
+      $ 匹配字符串的结束
+      常用的限定符 (扩展正则表达式 ERE)
+      * 重复零次或更多次
+      + 重复一次或更多次
+      ? 重复零次或一次
+      {n} 重复n次
+      {n,} 重复n次或更多次
+      {n,m} 重复n到m次
+      | 表示或 左边的表达式匹配不到再去匹配右边的表达式
+
+  【grep】只能查找或匹配文本 搜索文件目录
+    grep全局搜索正则表达式匹配的内容并打印匹配行
+      根据用户指定的模式（pattern）对目标文本进行过滤，显示被模式匹配到的行
+        模式简单理解为正则 模式支持正则
+    命令形式
+      grep [OPTIONS] PATTERN [FILE...]
+    选项
+      -v 显示不被pattern匹配到的行
+      -I 忽略字符大小写（i）
+      -n 显示匹配的行号
+      -c 统计匹配的行数
+      -o 仅显示匹配到的字符串
+      -E 使用ERE，相当于egrep （没加的时候扩展正则表达式是搜索不出来的）
+    实战
+      查找文件内包含root的行数
+      grep -n root test.txt
+      查找文件内容不包含root的行
+      grep -nv root test.txt
+      忽略大小写
+      grep -i RooT /etc/passwd
+      查询目录里包含关键字的文件内容，只显示文件名
+      grep -rl "root" /etc/
+      grep -E 'root|RooT' /etc/passwd
+  【sed】新增修改 删除 改 替换（编辑匹配到的文本）
+    sed是流编辑器，一次处理一行内容 默认不会修改文件本身
+    命令形式
+      sed[-hn..][-e<script>][-f<script FILE>][FILE]
+      选项说明
+        -h 显示帮助 等同于man sed
+        -n 仅显示script处理后的结果。
+        -V：版本信息
+        -i：修改文件（谨慎确认使用，不只是影响流编辑器的模式空间内容-e，也会直接改原文件内容）
+        -e：指定script来处理输入的文本文件，可指定多个-e选项
+        -f：指定script文件来处理输入的文本文件
+        -r 使用ERE？？？
+      常用动作说明 -e的<script>
+        a：新增，a后面可以跟字符串，会新增在下一行 sed -e '4a newline'
+        i：新增在上一行，和a恰恰相反sed -e '2i newline'
+        c：取代，c后面可以跟字符串，这些字符串可以取代 n1 n2之间的行内容
+          sed -e '2,5c number'
+        d：删除，删除匹配行 sed -e '2,5d'
+        p：打印，通常可以和参数-n一起使用
+          sed -n '/root/p'打印匹配到root的行 （//之间匹配代码块，可以是字符串或正则表达式）
+        s：替换，可以和正则表达式一起使用 sed -e '1,20s/old/new/g' 1到20行 全局替换/g，不加/g只会替换每行的第1个
+        =：显示行号
+
+      实战
+        1、删除第4行到最后一行
+          sed -e '4,$d'
+        2、打印5-7行
+         sed -n '5,7p' /etc/passwd
+          查找以root字符串开头的行
+         sed -n '^root/p' /etc/passwd
+        3、多点编辑，删除从第3行到最后一行，并把bash替换为Hello
+          sed -e '3,$d' -e 's/bash/Hello/g' /etc/passwd
+         直接修改文件内容
+          sed -i.bak 's/root/hello/g'passwd
+
+      help 模式下
+        n下一处 N上一处 j 下一页k上一页
+  【awk】比sed更强大 适合格式化文本，对文本进行复杂个是处理
+    把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行后续处理
+      有很短分段分行的概念
+
+      命令形式 只能用单引号
+      awk'pattern +{action}'[filenames]
+        {}里面代表指令，外面代表正则
+        -pattern 正则表达式
+        -action 对匹配到的内容执行的命令（默认为输出每行内容）
+      常用参数
+        FILENAME awk浏览的文件名
+        BEGIN 处理文本之前要执行的操作
+        END  处理文本之后要执行的操作
+        FS 设置输入域分隔符，等价于命令 -F选项 （默认是空格 用于分列）
+        NF 浏览记录的域的个数（列数）
+        NR 已读的记录数（行数，每读一行这个值会+1）
+        OFS 输出域的分隔符
+        ORS 输出记录分隔符
+        RS 控制记录分割符（默认是\n 代表一行结束）
+        $0 整条记录
+        $1 表示当前行的第一个域......以此类推
+
+      实战1：
+        搜索/etc/passwd有root关键字的所有行，并显示对应的shell
+          awk -F:'/root/{print $7}'/etc/passwd
+        打印/etc/passwd的第二行信息
+         awk -F:'NR==2{print $0}'/etc/passwd
+        {}命令代码块，包含一条或多条命令，多条命令使用;分割
+      实战2：
+        使用begin加入标题
+        awk 'BEGIN{print"BEGIN","BEGIN"}{print $1，$2}'/etc/passwd
+        自定义分隔符
+        echo"111 222|333 444|555 666"|awk‘BEGIN{RS="|"}{print $0}’"	"如何通命令定位 Linux 服务器下的日志？
+        a 如果要监控日志，那么使用 tail -f | grep xxx 命令，过滤需要的字段；
+        b 如果在完整日志中查看内容，使用
+        cat xxx.log | grep xxxx | awk '{print $1}' 等命令过
+        滤自己需要的内容"	"备注：tail -f 实时监控日志 ctrl+s暂停终端 ctrl+q继续终端 ctrl+c退出终端
+        vim ：quit 退出 默认显示最后10行 head -1 显示第一行
+
+Bash编程语法	变置定义与常用流程控制语法解析
+  【变量】
+    规则
+    。命名只能英文字母和下划线，首个字符不能以数字开头
+    。中间不能有空格，可以使用下划线（—）
+    。不能使用标点符号
+    。不能使用bash里的关键字（可用help命令查看保留关键字 会有提示）
+    定义变量 =
+     your_name="abc"
+    使用变量 $
+     echo $your_name
+    删除变量 unset
+     unset your_name
+    变量类型
+      字符串 your_name="Lily"
+        拼接字符串 greeting="hello,"$your_name"!"
+      数组 初始化 array_name=(value0 value1 value2 value3)
+        取数组 某个元素从0开始算  valuen=${array_name[n]}
+        单独赋值array_name[0]=value0
+        echo ${arrayname[*]}打印数组全部元素
+        echo ${arrayname[@]}打印数组全部元素
+
+    变量操作
+      只读变量
+      a=”123“
+      readonly a a就不能被更改也不能被删除 关闭窗口就会失效自然删除
+  【控制语句-if】分支
+    if condition
+    then
+        command1
+        command2
+        …
+        commandN
+    fi
+    示例：分号是一行的结束 fi是控制语句的结束
+      if [2==2]; then echo "true";else echo "false";fi
+      if [[2 > 1]]; then echo "true";else echo "false"; fi bash的特点 如果大于或小于号要用两个[]
+                                                                    -gt -lt表示大于或小于的时候就只要1个[]
+    实战
+      if [ $a -eq $b ];then echo "eqal";elif [ $a -lt $b ];then echo "small";elif [ $a -gt $b ];then echo "big";fi   if和[]之间要有空格 []和表达式之间都要空格，空格要求非常严格 否则会报错
+  【控制语句-for】
+    for var in item1 item2 … itemN
+    do
+        command1
+        command2
+        …
+        commandN
+    done
+    示例
+      for loop in 1 2 3 4 5
+      do
+          echo "hello"
+      done
+    实战
+      循环读取文件内容并前面加“a”输出
+        for I in $(cat dir.txt);do echo"a" $i;done
+  【控制语句-while】满足条件则执行循环
+    while condition
+    do
+        command1
+        command2
+        …
+        commandN
+    done
+    示例
+      int=1
+      while(($int<=5))
+      do
+          echo $int
+          let"int++"
+      done
+    实战
+      循环读取文件内容并前面加“a”输出
+      while read i;do echo"a" $i;done<dir.txt（代表从 dir.txt文件读）
+      用法相似"	"其他
+      :wq vim中保存并退出
+      :q vim中退出
+
+Bash脚本编写	编写可以直接执行的Shell脚本
+  【bash脚本基本使用】
+    read命令
+    。是用于从终端或文件中读取输入的内部命令
+    。读取整行输入
+    。每行末尾的换行符不被读取
+    read命令使用
+      从标准输入读取输入并赋值给变量
+    read var
+      从标准输入读取多个内容
+        read var1 var2 var3
+    不指定变量（默认赋值给REPLY）
+    read
+  【脚本参数传递】
+    $0脚本名称
+    $1-$n获取参数（第1个到 第n个参数）
+    $#传递到脚本的参数个数
+    $$脚本运行的当前进程ID号
+    $*以一个单字符串显示所有向脚本传递的参数
+    $?显示最后命令的退出状态。0表示没有错误，其他任何值表示有错误
+    可以将脚本放在.sh文件中，给.sh进行参数传递
+  【基本运算】
+    加减乘除 语法严格``反引号 运算符号前后，$前
+    `expr $a + $b`
+    `expr $a - $b`
+    `expr $a \* $b`  乘法需要用转义字符
+    `expr $a / $b`
+    取余 赋值 相等 不相等
+    `expr $a % $b`
+    a=$b
+    true:[ $a == $b ] 相同则返回true
+    true:[ $a != $b ] 不相同则返回true
+
+    检测相等[ $a -eq $b ]
+    检测不相等[ $a -ne $b ]
+    检测左边是否大于右边[ $a -gt $b ]
+    检测左边是否小于右边[ $a -lt $b ]
+    检测左边是否大于等于右边[ $a -ge $b ]
+    检测左边是否小于等于右边[ $a -le $b ]
+
+    如果是使用> < 判定时，需要使用两个[]
+  【bash与Linux命令组合】
+    【bash与目录命令】
+    创建目录并生成文件
+    mkdir test
+    cd test
+    echo "hello">test.txt （将左边的重定向到右边的文件中 如果使用 <就可以反过来把右边的内容重定向到左边）
+    ls
+    【bash与内存】
+    统计内存使用
+    for I in `ps aux | awk ``{print $6}` | grep -v "RSS""
+      count=$[ $count + $i ]
+    echo "$count/kb
+  实战
+
+    read
+
+    read a
+    123 完成赋值
+    echo a
+
+    read a b c
+    123 456 789 多个变量赋值
+    echo a
+    echo b
+    echo c
+
+    read
+    456 对默认变量进行赋值
+    echo $REPLY
+
+    对脚本进行参数传入
+    vim test.sh 新建一个文件
+    #!/bin/bash 指定用的是bash
+    echo $1,$2,$3 传参 3个参数
+    echo $0 打印文件名
+    echo $# 打印参数数量
+    echo $* 打印参数的所有内容
+    echo $? 打印最后命令的退出状态。0表示没有错误，
+    运行脚本
+    bash test.sh 1 2 3 （运行时传3个参数）
+  实战运算
+    #!/bin/bash
+    a=10
+    b=20
+    `expr $a + $b`
+    `expr $a - $b`
+    `expr $a \* $b`
+    `expr $a / $b`
+    `expr $a % $b`
+
+    #!/bin/bash
+    a=10
+    b=20
+    if [ $a -lt $b ]
+    then
+        echo"小于"
+    fi
+  实战目录操作
+    #!/bin/bash
+    mkdir test
+    cd test
+    echo "hello">test.txt
+    cat test.txt
+
+    bash test.sh
+    ls
+    cd test
+    ls
+    cat test.txt
+    shll文件和跟任何shell命令组合，写入
+
+    ps aux 查看进程的任何信息
+    ps aux | awk '{print $3}'显示第三列     ps aux配合三剑客进行过滤
+    ps aux | awk '{print $3}' | grep -V PGID 不显示标题行
+
+Linux进阶命令	CURL接口请求、Jq、JSon数据处理
+  CURL
+    对服务器进行传送或发送数据的工具
+    支持常用协议
+      DICT/FILE/FTP/FTPS/GOPHER/HTTP/HTTPS/IMAP
+    curl命令整个过程中不能交互，所有命令运行完才会给结果
+
+    怎么使用curl
+      curl -x 127.0.0.1:8888 https://www.baidu.com/
+      -x后面制定代理端口 配合代理工具（如Charles ，访问网站时，Charles就会清晰的显示出发送了哪些命令 有利于排错）
+
+    接口请求
+
+      发送get 请求 参数
+        -G:使用get请求
+        curl https://www.baidu.com/（什么都没加，就默认为get）
+        curl -G https://www.baidu.com/
+        curl -X GET https://www.baidu.com/
+
+      post 请求
+        -d:指定使用post请求数据
+        curl -d 'login=1234' https://www.baidu.com/(-d后面是带的请求体即请求内容)
+        curl -X POST https://www.baidu.com/
+
+      其他请求
+        保存响应内容
+        curl -o tmp.html  https://www.baidu.com/ (-o将响应内容保存到 tmp.html文件 )
+      输出通信的整个过程
+        curl -v  https://www.baidu.com/（可以查看请求头请求的整个内容）
+      不输出错误和进度信息
+        curl -s  https://www.baidu.com/ （静默模式，很多信息就会被关掉）
+
+      实战
+        ---打开Charles 打开代理设置，监听8888 http ,通过curl请求访问百度 查看捕获到的请求
+        curl-x 127.0.0.1:8888 -X POST -d 'user=1234' -o tmp.html https://www.baidu.com/
+
+  jq 是json的一个处理工具（json的提取器） 提取json的工具 对json数据进行处理
+
+    使用
+      .格式优化
+      echo '{"a":11,"b":12}' | jq'.'（格式美化，缩进 高亮）
+    常用方法1：
+      内容提取
+      echo'{"foo":42,"bar":"less interesting data"}' | jq.foo (提取出 foo值)
+    常用方法2 ：.[]
+      从数据中提取单个数据
+      echo '[{"a"1:,"b":2},{"c"3:,"d":4}]' | jq .[0]
+      从数据中提取所有数据
+      echo '[{"a"1:,"b":2},{"c"3:,"d":4}]' | jq .[]
+      过滤多个值
+      echo '[{"a"1:,"b":2},{"c"3:,"d":4}]' | jq .[0,1]
+    常用方法3 ： {}没有点
+      数据重组成数组
+      echo '{"a"1:,"b":2,"c"3:,"d":4}' | jq .'[.a,.b]'
+      数据重组成对象
+      echo '{"a"1:,"b":2,"c"3:,"d":4}' | jq .'{"tmp":.b}'
+    实战
+      echo '{"a":10,"b":20}'
+      echo '{"a":10,"b":20}' | jq'.'
+      echo '{"a":10,"b":20}' | jq '.a'
+      echo '[{"a":10,"b":20},{"c":30}]' | jq '.[0]'
+      echo '[{"a":10,"b":20},{"c":30}]' | jq '.[1]'
+      echo '[{"a":10,"b":20},{"c":30}]' | jq '.[-1]'倒数第一
+      echo '[{"a":10,"b":20},{"c":30}]' | jq '.[]'
+      echo '[{"a":10,"b":20},{"c":30},{"d":40}]' | jq '.[]'
+      echo '[{"a":10,"b":20},{"c":30},{"d":40}]' | jq '[.a,.b,.c]' 重组前面是没有点的，有点代表是取值
+      echo '[{"a":10,"b":20，"c":30} | jq '{"f":.a,"f1":.b}' 重组前面是没有点的，有点代表是取值
+      重组之后可以跟三剑客结合
+      echo '[{"a":10,"b":20，"c":30} | jq '{"f":.a,"f1":.b}'  | grep f
+
+★实战丨三剑客实战Nginx曰志分析	以真实的WebLog为例演练如何分析核心测试数据指标
+  【Nginx曰志分析】
+    课程价值
+      掌握shell的管道机制
+      掌握三剑客的实用用法
+      大纲
+      实战环境
+      nginx 日志解析
+
+    学习资料
+      高级Bash脚本编程指南
+      LINUX与UNIX SHELL编程指南
+      鸟哥的Linux私房菜
+      IBM DeveloperWorks
+      阮一峰的《bash脚本教程》
+      Google
+
+
+  awk官方文档， mac下的awk与gawk并不一致，用法上有一定的差异。
+
+    定义函数
+
+    # 查看命令
+    type
+    awk字段枚举
+
+    awk 'NR==1{for(i=1;i<=NF;i++) {print i"="$i} }' nginx.log
+    课间作业
+    演练数据
+    把/tmp/nginx.log文件复制到自己的家目录下，用来演练
+
+    实战内容
+    日志数据检索
+    find_error_log 找出log中的404 500的报错
+    find_before 找出500错误时候的上下文 考察grep高级用法
+    日志数据统计
+    find_top_10 找出访问量最高的ip 统计分析
+    数据文件修改
+    url_summary 找出访问量最高的页面地址 借助于sed的统计分析
+    find_error_log
+    编写一个函数 find_error_log()
+    找出log中的404 500的报错
+    回复的时候按照这个格式
+
+    find_error_log() {
+    }
+    url_summary(){
+
+    }
+    find_before
+    找出500错误时候的上下文，找出500错误的前两行 考察grep高级用法，并把这个参数的描述信息贴上
+
+    find_before(){
+    }
+
+    find_top_3
+    找出访问量最高的ip， 统计分析，取出top3
+
+    find_top_3(){
+
+    }
+    url_avg_time
+    找出 /topics 的平均响应时间，响应时间在倒数第二个字段
+
+    url_avg_time(){
+    #易读性好，易修改
+    awk '$7=="/topics"' nginx.log | awk '{print $(NF-1)}' | awk '{t+=$1}END{print t/NR }'
+    #高性能
+    awk '$7=="/topics"{total+=$(NF-1);count+=1}END{print total/count}'  nginx.log
+    课后作业 url_summary
+    找出访问量最高的页面地址 借助于sed的统计分析
+
+    /topics/16689/replies/124751/edit 把数字替换为 /topics/int/replies/int/edit
+    /_img/uploads/photo/2018/c54755ee-6bfd-489a-8a39-81a1d7551cbd.png!large 变成 /_img/uploads/photo/2018/id.png!large
+    /topics/9497 改成 /topics/int
+    其他规则参考如上
+    输出
+
+    url pattern对应的请求数量
+    取出top 20请求量的url pattern
+    类似
+    nnn urlxxx
+    mmm urlxxx
+
+    url_summary(){
+
+    }
+
+★实战|三剑客实战Linux性能统计分析	统计特定进程的CPI、MEM等基础性能数据
+  Linux 实战
+
+    课程价值
+      掌握Linux常用知识
+      大纲
+      常用软件 Linux 环境配置
+      比较常见的Linux使用场景
+
+    课后作业
+      根据输入的关键字来终止进程的运行？
+      查看当前开放的端口并根据进程来关闭使用这个端口的进程？
+★实战|抽奖程序脚本编写	使用三剑客完成数据处理

@@ -1,0 +1,19 @@
+app自动化测试
+  Appium架构介绍与环境安装
+  Appium用例录制
+  元素定位方式与隐式等待
+  App控件定位
+  App控件交互
+  触屏操作自动化
+  高级定位技巧
+  显示等待机制
+  特殊控件Toast识别
+  属性获取与断言
+  参数化用例
+  Android WebView测试
+  设备交互API
+  Capability使用进阶
+  Appium WebView技术原理
+  Appium问题分析定位
+  Appium原理与JsonWP协议分析
+  Appium源码分析

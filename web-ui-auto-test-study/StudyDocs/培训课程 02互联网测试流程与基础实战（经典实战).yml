@@ -1,0 +1,318 @@
+★实战|测试流程建设实战之Jira系统实战	测试流程规范建设与测试平台搭建
+  业务架构分析
+    plantuml：https://plantuml.com/zh/ 26
+    plantuml 演练地址：https://www.planttext.com/ 18
+    目标完成测试体系建设
+    时序图
+
+  业务知识梳理
+    业务架构：业务模块之间的关系
+    技术架构：组件之间关联关系和数据通讯方式
+    组织架构：协作团队的组织关系
+    数据架构：数据的关联关系
+
+  测试管理平台介绍
+    JIRA
+    redmine
+    testlink
+    禅道
+
+  测试架构：
+    业务架构：业务架构与流程图分析
+    测试活动管理；
+    。测试用例管理平台
+    。测试执行分析
+    。Bug管理平台
+    。测试报告与测试分析图表
+
+
+  测试流程建设实战之jira系统实战1
+
+    课程价值
+        掌握业务架构分析方法
+        了解 JIRA 平台
+    大纲
+        业务架构分析
+        测试管理平台介绍
+        JIRA 搭建
+        JIRA 介绍
+        实战内容
+        参考链接
+
+            plantuml：https://plantuml.com/zh/
+             plantuml 中文文档：plantuml中文文档
+             plantuml 在线绘图地址：https://plantuml.ceshiren.com/
+            docker hub: https://registry.hub.docker.com/r/atlassian/jira-software
+                JIRA 在线演练平台
+                    地址：https://jira.ceshiren.com/
+                    user：hogwarts
+                    password：hogwarts
+    业务架构分析
+        业务知识梳理
+            业务架构：业务模块之间的关系
+            技术架构：技术组件之间的关系与通讯方式
+            组织架构：协作团队的组织关系
+            数据架构：数据的关联关系
+
+        业务架构分析
+            思维导图（不涉及时序）
+            plantuml
+                plantuml – 时序图
+                第一个例子
+
+                    @startuml
+                    autonumber
+
+                    actor user
+                    database db
+
+                    Alice -> Bob: Hi Bob
+                    Bob --> Alice: HI Alice
+
+                    Alice -> Bob: how are you?
+                    Alice <-- Bob: Fine, thanks.
+                    @enduml
+                雪球登录例子
+
+                    @startuml
+                    actor 用户
+
+                    用户 -> 客户端: 点击帐号密码登录
+                    客户端 --> 用户: 返回登录界面
+                    用户 -> 客户端: 输入帐号密码，点击登录
+                    客户端 --> 客户端: 校验帐号密码
+
+                    alt 校验是否通过
+                    客户端 -> 服务端: 传递账号密码
+                    else
+                    客户端 --> 用户: 不通过，展示提示信息
+                    end
+
+                    database 数据库
+
+                    服务端 -> 数据库: 查询用户登录信息
+                    数据库 --> 服务端: 返回查询结果
+
+                    alt 登录是否成功
+                    服务端 --> 客户端: 登录成功
+                    客户端 --> 用户: 返回登录成功的界面
+                    else
+                    服务端 --> 客户端: 登录失败
+                    客户端 --> 用户: 提示登录失败
+                    end
+                    @enduml
+    测试管理平台
+        JIRA
+        redmine
+        testlink
+        禅道
+    JIRA 搭建（待深入学习docker命令）
+        docker pull atlassian/jira-software
+
+        docker volume create --name jiraVolume
+
+        docker run -v jiraVolume:/var/atlassian/application-data/jira --name="jira" -d -p 8089:8080 atlassian/jira-software
+
+  测试流程建设实战之测试用例Bug管理实战2
+
+    课程价值
+        掌握JIRA中管理测试用例和Bug的流程搭建
+        掌握测试用例导入JIRA的方法
+        掌握Bug报告书写方法
+    大纲
+        搭建测试用例管理流程
+        JIRA 管理测试用例
+        Bug 基础知识
+        JIRA 管理 Bug
+
+    python 命名规范
+
+        1.项目名称
+            首字母大写+大写式驼峰，
+            ProjectName
+
+        2.模块名和包名
+            全部小写+下划线驼峰
+            module_name  package_name
+
+        3.类名称，异常
+            首字母大写+大写式驼峰，
+            class ClassName:   ，ExceptionName
+
+        4.全局变量、常量
+            全部使用大写字母+下划线驼峰
+            GLOBAL_VAR_NAME，CONSTANT_NAME
+
+        5.方法名，函数名，其余变量，参数，实例
+            全部小写+下划线驼峰
+            method_name，function_name，instance_var_name, function_parameter_name, local_var_name
+
+        6.除了计数器外，不使用单字母命名
+
+★实战|测试流程建设实战之测试用例管理	测试用例批量导入、测试用例管理、测试流程实战
+    实战内容
+        JIRA管理测试用例
+            新建问题类型
+            系统级别的设置，设置入口：
+            选择问题类型，点击添加问题类型按钮
+            把问题类型关联到项目
+            新建工作流
+            新建工作流
+            把工作流关联到项目
+            选择自己画好的工作流
+            点击发布按钮
+            新建界面
+            添加一个新界面
+            选择需要的字段
+            把界面关联到项目
+            把三个界面都关联到我们自己创建的界面上
+            新建字段
+            新建自定义字段
+
+            记得勾选字段要显示的界面
+            添加字段配置：选择我们需要展示的，隐藏不需要的，设置必填的
+            添加字段配置方案：把字段配置关联到方案
+            把字段配置方案添加到项目
+        把测试用例转化成为csv
+            手动转化
+            自动化脚本
+                from xmindparser import xmind_to_dict
+                import csv
+                import logging
+                import logging.handlers
+                from logging.handlers import TimedRotatingFileHandler
+                from datetime import datetime
+
+
+                class XmindToCsv():
+
+                    def my_log(self):
+                        '''创建对象的类方法'''
+                        # 创建日志搜集器
+                        mylog = logging.getLogger('mylog')
+                        mylog.setLevel('DEBUG')
+                        # 创建日志输出渠道
+                        sh = logging.StreamHandler()
+                        sh.setLevel('INFO')
+                        # 按时间进行轮转的收集器
+                        file_name = datetime.now().strftime(%Y-%m-%d") + '.log'
+                        fh = TimedRotatingFileHandler(file_name, encoding='utf8', when='h', interval=24, backupCount=3)
+                        fh.setLevel('DEBUG')
+                        # 将日志输出渠道和日志收集器进行绑定
+                        mylog.addHandler(fh)
+                        mylog.addHandler(sh)
+                        # 设置日志输出格式
+                        fot = '%(asctime)s-[%(filename)s-->line:%(lineno)d]-%(message)s'
+                        formatter = logging.Formatter(fot)
+                        # 将日志输出格式与输出渠道进行绑定
+                        sh.setFormatter(formatter)
+                        fh.setFormatter(formatter)
+                        return mylog
+
+                    def topics_num(self, value):
+                        """获取xmind标题个数"""
+                        try:
+                            return len(value['topics'])
+                        except KeyError:
+                            return 0
+
+                    def xmind_title(self, value):
+                        """获取xmind标题内容"""
+                        return value['title']
+
+                    def write_csv(self, filename, case):
+                        '''写入csv文件，case为列表'''
+                        headers = ["模块", "测试标题", "测试步骤", "预期结果"]
+
+                        with open(filename, 'w')as f:
+                            f_csv = csv.writer(f)
+                            f_csv.writerow(headers)
+                            f_csv.writerows(case)
+                        print("success!")
+
+                    def read_xmind(self, filename):
+                        '''读取xmind内容，返回case列表'''
+
+                        # xmind内容
+                        xmind_content = xmind_to_dict(filename)[0]['topic']
+                        # 模块内容
+                        module_name = self.xmind_title(xmind_content)
+                        # 二级模块的数量
+                        module_num2 = self.topics_num(xmind_content)
+                        # 用例列表
+                        case_list = []
+
+                        for i in range(module_num2):
+                            case_num = self.topics_num(xmind_content['topics'][i])
+                            if case_num == 0:
+                                print(f'第{i + 1}个功能模块下，测试的功能点数量为0，请确认用例是否编写完成')
+                                self.my_log().debug(f'第{i + 1}个功能模块下，测试的功能点数量为0，请确认用例是否编写完成')
+                            else:
+                                tag = self.xmind_title(xmind_content['topics'][i])
+                                case_point_num = self.topics_num(xmind_content['topics'][i])
+                                for j in range(case_point_num):
+                                    case = []
+                                    if case_point_num == 0:
+                                        print(f'第{j + 1}个功能模块下，测试的功能点数量为0，请确认用例是否编写完成')
+                                    else:
+                                        case_point = self.xmind_title(xmind_content['topics'][i]['topics'][j])
+                                        case_step = self.xmind_title(xmind_content['topics'][i]['topics'][j]['topics'][0])
+                                        expected_result = self.xmind_title(xmind_content['topics'][i]['topics'][j]['topics'][0]['topics'][0])
+                                        case_title = "【" + tag + "】" + case_point
+                                        case.append(module_name)
+                                        case.append(case_title)
+                                        case.append(case_step)
+                                        case.append(expected_result)
+                                        case_list.append(case)
+                        return case_list
+
+                    def main(self, csv_file, xmind_file):
+                        case_list = self.read_xmind(xmind_file)
+                        self.write_csv(csv_file, case_list)
+
+                if __name__ == '__main__':
+                    xmind_file = "/Users/mac/Desktop/雪球自选设置.xmind"
+                    csv_file = "/Users/mac/Desktop/xueqiu.csv"
+                    XmindToCsv().main(csv_file, xmind_file)
+        JIRA导入问题
+            问题–从CSV文件导入问题–选择CSV文件-选择对应的字段–导入数据
+
+        Bug 基础知识
+            Bug 定义
+                程序漏洞
+                程序错误
+                程序不完善
+
+            Bug判定标准
+                软件未达到客户需求文档的功能和性能
+                软件出现客户需求不能容忍的错误
+                软件的使用未能符合客户的习惯和工作环境
+                软件超出需求文档的范围
+
+            Bug严重程度和优先级
+                致命：修改优先级为最高，该级别问题需要立即修改。
+                严重：修改优先级为高，该级别需要程序员尽快修改。
+                一般：修改优先级为中，该级别需要程序员修改。
+                建议：修改优先级为低，该级别需要程序员修改或不修改。
+
+            Bug 报告的要素
+                编号、所属产品、发现版本、所属模块、提交人、复现概率：必现，偶现
+                错误类型：代码错误，设计缺陷，安全相关，性能问题，界面优化，安装部署
+                严重程度、优先级
+                标题
+                内容：发现环境、前提条件、复现步骤、预期结果、实际结果
+                附件：截图、log 日志、测试数据
+
+            JIRA 管理 Bug
+                工作流
+                课后作业
+                    在练习平台创建自己的bug管理项目，并把这几天在雪球中发现的bug提交上去
+
+                    搭建的时候，需要加上字段配置和字段配置方案
+
+                    提交问题查看界面的截图
+                    提交项目设置中问题类型的截图
+                    提交工作流截图
+                    命名规范：xxx_自己的姓名"
+
+★实战|测试流程建设实战之Bug管理	用例执行、Bug录入、Bug管理流程实战

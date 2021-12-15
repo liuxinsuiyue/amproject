@@ -1,0 +1,9 @@
+服务端接口自动化测试
+  接口测试框架
+  接口请求构造
+  接口请求断言
+  json请求
+  json响应断言
+  schema断言
+  header cookie处理
+

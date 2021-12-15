@@ -1,0 +1,15 @@
+python
+  面向对象
+      动作是方法 调用方法  类实例对象.fun1()   举例：driver.refresh（）
+      属性即字段  调用方法   类实例对象.size    举例：driver.page_source
+      实例化方法           类实例对象 = 类()    举例：driver=webdriver.Chrome()
+  模块引入
+      引入文件路径     后面跟着路径下文件，再跟着类的实例化的方法
+          from selenium import webdriver
+      引入文件        后面跟着类的实例化（特殊类实例化直接带返回值）
+          from selenium.webdriver.support import expected_conditions
+
+      引入类          指明使用类的常量或？？方法
+          from selenium.webdriver.common.by import By
+
+              WebDriverWait(self.driver,15).until(expected_conditions.visibility_of_element_located((By.XPATH,"//*[@id='click-area']/div[2]/span")))
